@@ -13,6 +13,13 @@ export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   create(_createUserDto: CreateUserDto) {
+    const { email, name, password } = _createUserDto;
+    if (!email || !name || !password) {
+      return {
+        status: false,
+        message: 'Erro, todos os campos são obrigatorios',
+      };
+    }
     const user = new this.userModel(_createUserDto);
     return user.save();
   }
